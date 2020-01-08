@@ -41,7 +41,7 @@ Below is a brief overview of what each script does.
     - Make final tweaks to clean data
     - Estimate mixed effects models for each dependent variables
     - Partially format results
-- **8 - format results.R**
+- **8 - Format results.R**
     - Further format results for publication
 - **9 - Standardize Variables.R**
     - Standardize variables for modeling
