@@ -1,3 +1,5 @@
+library(data.table)
+
 #0 - Set directory
     setwd("C:/Users/bda13/Desktop/Sociology/Statistics/PSID/")
 

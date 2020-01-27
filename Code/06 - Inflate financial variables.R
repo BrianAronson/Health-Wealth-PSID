@@ -3,8 +3,10 @@ library(data.table)
 #0 - Set directory
     setwd("C:/Users/admin/Desktop/Sociology/PSID Data")
 
+    
 #1 - Load data
     I <- readRDS("5 - Merged_Data.rds")
+
 
 #2 - Inflate numbers to 2015
     #read CPI
@@ -26,12 +28,17 @@ library(data.table)
                 varmax[i] <- max(I[, i], na.rm = T)
               })
             }
-          #exclude id variables from vars to inflate
-            toinflate <- grep("^eq|^inc|^debt", names(I))
+          #determine which vars to inflate
+            toinflate <- grep("^eq|^inc|^debt", names(I), value = T)
+            noinflate <- grep("\\_d$", names(I), value = T)
+            toinflate <- setdiff(toinflate, noinflate)
+            toinflate <- match(toinflate, names(I))
+            
           #inflate those variables and divide by 1000
             for(i in 1:length(toinflate)){
                 I[, toinflate[i]] <- inflatenums$Avg*I[, toinflate[i]]
             }
 
+            
 #3 - save
     saveRDS(I, "6 - Merged_Data.rds")

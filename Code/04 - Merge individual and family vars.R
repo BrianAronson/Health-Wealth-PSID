@@ -1,18 +1,22 @@
-#Merge individual and family
+library(data.table)
 
 #0 - Set directory
     setwd("C:/Users/admin/Desktop/Sociology/PSID Data")
+    
     
 #1 - load data
     I <- readRDS("IndividualData.rds")
     D <- readRDS("PanelData.rds")
 
+    
 #2 - Match by year and id in that year
     DI <- merge(D, I, by = c("fam_id", "Year"))
+    
     
 #3 - Order by fam id and year
     DI <- DI[order(DI$ind_id, DI$ind_fam_id_68, DI$Year), ]
  
+    
 #4 - Assume spousal traits don't matter; collapse heads and wives based on relationship to head.
 #    create a new set of variables based on head and wife variables so that we can have common 
 #    variables for each individual
@@ -53,6 +57,7 @@
         DI <- DI[!DI$badmatch, ]
     #j) kill redundant variables
         DI[, c(indexh, indexw)] <- NULL
+        
         
 #5 - Save
     saveRDS(DI, "4 - Merged_Data.rds")

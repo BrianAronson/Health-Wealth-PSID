@@ -7,7 +7,7 @@ library(data.table)
 #1) read data
     df <- data.table(readRDS("6 - Merged_Data.rds"))
 
-    
+
 #2) Minor variable alterations/creations
     #a) cap overly skewed health outcomes
         df$h_BMI[df$h_BMI > quantile(df$h_BMI, .999, na.rm = T)] <- quantile(df$h_BMI, .999, na.rm = T)
@@ -137,7 +137,6 @@ library(data.table)
           y <- log(x + sqrt(x ^ 2 + 1))
           return(y)
         }
-        
     #d - transform wealth
         df[, ':='(
             #total wealth dummies

@@ -31,22 +31,18 @@ library(xlsx)
     #c) set formulas
         form1 <- y ~ ego_black2 + ego_age + ego_age2 + ego_female + ego_black2 * (ego_age + ego_age2) + fam_region + year2 + died  + (1 | fam_id_68 / ind_id)
         form2 <- update(form1, ~ . +
-            log_income  + ego_dg_highschool + ego_dg_somecollege + ego_dg_bachelors + ego_dg_advanced)
+            ihs_income  + ego_dg_highschool + ego_dg_somecollege + ego_dg_bachelors + ego_dg_advanced)
         form2b <- update(form2, ~ . +
-            ego_black2 * (log_income  + ego_dg_highschool + ego_dg_somecollege + ego_dg_bachelors + ego_dg_advanced) )
+            ego_black2 * (ihs_income  + ego_dg_highschool + ego_dg_somecollege + ego_dg_bachelors + ego_dg_advanced) )
         form3 <- update(form2b, ~ . +
-            log_wealth)
-        form3b <- update(form2b, ~ . +
-            log_wealth * ego_black2)
-        form4 <- update(form2b, ~ . + 
-            eq_home_d + peq_home + peq_debt + peq_stock + peq_savings)
-        form4b <- update(form2b, ~ . + 
-            ego_black2 * (eq_home_d + peq_home + peq_debt + peq_stock + peq_savings))
-        form5 <- update(form2b, ~ . + 
-            log_wealth * ego_black2 + eq_home_d + peq_home + peq_debt + peq_stock + peq_savings)
-        form5b <- update(form2b, ~ . + 
-            log_wealth * ego_black2 + ego_black2 * (eq_home_d + peq_home + peq_debt + peq_stock + peq_savings))
-        l.forms <- list(form1, form2, form2b, form3, form3b, form4, form4b, form5, form5b)
+            ihs_wealth)
+        form3b <- update(form3, ~ . +
+            ihs_wealth:ego_black2)
+        form4 <- update(form3b, ~ . +
+            eq_home_d + ihs_home + ihs_debt + ihs_stock + ihs_savings)
+        form4b <- update(form4, ~ . +
+            ego_black2:(eq_home_d + ihs_home + ihs_debt + ihs_stock + ihs_savings))
+        l.forms <- list(form1, form2, form2b, form3, form3b, form4, form4b)
     #d) remove unecessary variables from df
         #i) Create function to identify variables in formula
             text.form <- function(formula){
@@ -85,7 +81,7 @@ library(xlsx)
             data[, two.obs.since.2005 := ind_id %in% df[year >= 2005 & year <= 2011 & !already_died, .N , by = "ind_id"][N >= 2, ind_id]]  
             data <- data[two.obs.since.2005 == T, ]          
           }else{
-            data[, three.obs.since.1984 := ind_id %in% df.1984[years.after.1984 == T & !already_died, .N , by = "ind_id"][N >= 3, ind_id]]
+            data[, three.obs.since.1984 := ind_id %in% df.1984[year %in% c(1984, 1989, 1994, 1999, 2001, 2003, 2005, 2007, 2009, 2011, 2013, 2015) & !already_died, .N , by = "ind_id"][N >= 3, ind_id]]
             data <- data[three.obs.since.1984 == T, ]
           }
       #run model
@@ -156,8 +152,8 @@ library(xlsx)
                 "fam_region",
                 "year2",
                 "died",
-                "log_income",
-                "ego_black2:log_income",
+                "ihs_income",
+                "ego_black2:ihs_income",
                 "",
                 "ego_dg_highschool",
                 "ego_dg_somecollege",
@@ -168,20 +164,20 @@ library(xlsx)
                 "ego_black2:ego_dg_somecollege",
                 "ego_black2:ego_dg_bachelors",
                 "ego_black2:ego_dg_advanced",
-                "log_wealth",
-                "ego_black2:log_wealth",
+                "ihs_wealth",
+                "ego_black2:ihs_wealth",
                 "",
                 "eq_home_d",
-                "peq_home",
-                "peq_savings",
-                "peq_stock",
-                "peq_debt",
+                "ihs_home",
+                "ihs_savings",
+                "ihs_stock",
+                "ihs_debt",
                 "",
                 "ego_black2:eq_home_d",
-                "ego_black2:peq_home",
-                "ego_black2:peq_savings",
-                "ego_black2:peq_stock",
-                "ego_black2:peq_debt",
+                "ego_black2:ihs_home",
+                "ego_black2:ihs_savings",
+                "ego_black2:ihs_stock",
+                "ego_black2:ihs_debt",
                 ""
               )
           #iii) append any variables not included above

@@ -2,10 +2,12 @@ library(data.table)
 
 #0 - Set directory
     setwd("C:/Users/admin/Desktop/Sociology/PSID Data")
-    
+ 
+       
 #1 - Load data
     I <- readRDS("4 - Merged_Data.rds")
 
+    
 #2 - create a few important variables
     #BMI
         I$BMI <- I$ego_weight*0.453592/(I$ego_height*0.3048)^2
@@ -25,6 +27,7 @@ library(data.table)
         I$ego_head <- ifelse(I$rel_to_head == "head", 1, 0)
         I$h_distress[I$ego_head == 0] <- NA
         
+        
 #3 - rename, remove, and reorder variables
     I <- data.table(I)
     setnames(I,
@@ -33,5 +36,6 @@ library(data.table)
             )
     I <- as.data.frame(I[, c("year", "ego_black", "ego_female", "ego_age", "ego_head", "ego_died", "ego_married", "ego_children18", "ego_cohort", "ego_dg_lthighschool", "ego_dg_highschool", "ego_dg_somecollege", "ego_dg_bachelors", "ego_dg_advanced", "h_general", "h_BMI", "h_activities", "h_conditions", "h_distress", "h_heart_attack", "h_stroke", "h_hospital", "h_lim_work", "h_disabled", "exp_all_medical", "exp_health_insurance", "exp_hospital", "exp_out_of_pocket_medical", "exp_prescriptions", "eq_bus", "eq_home", "eq_debt", "eq_otr_assets", "eq_otr_estate", "eq_savings", "eq_stock", "eq_vehicle", "eq_wealth", "eq_bond", "eq_ira", "eq_mortgage1", "eq_mortgage2", "eq_home_d", "eq_home_cost", "inc_lump", "inc_lump_d", "inc_total", "inc_friend", "inc_relative", "inc_salaried_d", "inc_self_empl_d", "inc_unemployed", "inc_hours", "ins_medicaid", "ins_empl", "ins_any", "ind_id", "debt_bus", "debt_otrestate", "debt_creditcard", "debt_student", "debt_medical", "debt_legal", "debt_family", "debt_other", "fam_id", "fam_id_68", "fam_region","badmatch", "rel_to_head", "ego_race", "latino")])
 
+    
 #4 - save
     saveRDS(I, "5 - Merged_Data.rds")
