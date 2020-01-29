@@ -4,7 +4,7 @@
 </p>
 
 # Overview
-This repository was written in 2018-2020. It examines the relationship between health and wealth using the Panel Study of Income Dynamics. It contributes to three interrelated projects, all of which examine how the health wealth relationship is mediated by one's race, asset allocation, and socio-economic strata with longitudinal modeling approaches (e.g. fixed effects models, mixed effects/growth models).
+This repository was written in 2018-2020. It examines the relationship between health and wealth using the Panel Study of Income Dynamics. It contributes to three interrelated projects, all of which examine how the relationship between health and wealth is mediated by one's race, asset allocation, and socio-economic strata with longitudinal modeling approaches (e.g. fixed effects models, mixed effects/growth models). The majority of the current scripts in the `Code` folder; however, focus specifically on how differences in household finances mediates black-white health disparities.
 
 # Usage
 This repository was built only for personal use, so it requires a few steps for migrating to a new computer. New users must first:
