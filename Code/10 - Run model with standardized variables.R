@@ -12,16 +12,17 @@ library(xlsx)
     
 #1) Read and standardize data
     df <- data.table(readRDS("8 - df.2005.rds"))
-    #a) identify continuous variables
-        cols <- unlist(df[, lapply(.SD, function(x) length(unique(x)))])
-        cols <- names(cols[cols > 3])
-    #b) indentify independent variables
-        vars <- c("h_general", "h_conditions", "h_lim_work", "h_disabled", "h_distress", "h_BMI")
-    #c) remove vars from continuous variable list
-        cols <- setdiff(cols, c("ind_id", "year","fam_id_68", "fam_id", "wealth.group", vars))
-    #d) standardize variables
+    #a) identify IVs to standardize
+        cols <- c("ihs_home", "ihs_debt", "ihs_stock", "ihs_savings")
+    #b) standardize variables
         df[, (cols) := lapply(.SD, function(x) scale(x)), .SDcols = cols]
-  
+    #c) set DVs
+        vars <- c("h_general",
+                  "h_conditions",
+                  "h_lim_work",
+                  "h_disabled",
+                  "h_distress",
+                  "h_BMI")
     
 #2) Model prep
     #a) set models
