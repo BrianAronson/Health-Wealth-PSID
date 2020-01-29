@@ -36,7 +36,6 @@ library(ggthemes)
     # df[1:42, fam_id_68 := df$fam_id_68[1]]
     # df2 <- df[1:42, ]
     # predict(df.modll[[2]], df2, re.form = NA)
-    # 
     # predictInterval(df.modll[[2]], df2, n.sims = 100)
     
     
