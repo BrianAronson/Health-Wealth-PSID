@@ -169,8 +169,13 @@ library(data.table)
             #neg networth
                 neg_wealth = eq_wealth < 0
         )]
+        df[, ':='(
+            #set negative components to zero
+                ihs_stock = ifelse(ihs_stock < 0, 0 ,ihs_stock),
+                ihs_savings = ifelse(ihs_savings < 0, 0 , ihs_savings)
+        )]
 
-
+        
 #7) save data
     saveRDS(df, "7 - Merged_Data.rds")
         

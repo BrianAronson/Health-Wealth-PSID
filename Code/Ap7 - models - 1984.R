@@ -9,11 +9,9 @@ library(xlsx)
 #0) Set directory
     setwd("C:/Users/admin/Desktop/Sociology/PSID Data")
 
-    
 #1) Read data
-    df <- data.table(readRDS("8 - df.2005.rds"))
+    df <- data.table(readRDS("8 - df.1984.rds"))
 
-    
 #2) Model prep
     #a) set variables
         vars <- c("h_general",
@@ -24,25 +22,25 @@ library(xlsx)
                   "h_BMI")
     #b) set models
         l.mod <- list()
-        l.mod[[1]] <-  function(form, df) clmm(formula=form, data=df, Hess=T)
-        l.mod[[2]] <-  function(form, df) glmer(formula=form, data=df, family = poisson, nAGQ=0)
-        l.mod[[3]] <-  function(form, df) clmm(formula=form, data=df, Hess=T)
-        l.mod[[4]] <-  function(form, df) glmer(formula=form, data=df, family = binomial, nAGQ=0)
-        l.mod[[5]] <-  function(form, df) glmer(formula=form, data=df, family = poisson, nAGQ=0)
-        l.mod[[6]] <-  function(form, df) lmer(formula=form, data=df)
+        l.mod[[1]] <-  function(form, df) clmm(formula = form, data = df, Hess = T)
+        l.mod[[2]] <-  function(form, df) glmer(formula = form, data = df, family = poisson, nAGQ = 0)
+        l.mod[[3]] <-  function(form, df) clmm(formula = form, data = df, Hess = T)
+        l.mod[[4]] <-  function(form, df) glmer(formula = form, data = df, family = binomial, nAGQ = 0)
+        l.mod[[5]] <-  function(form, df) glmer(formula = form, data = df, family = poisson, nAGQ = 0)
+        l.mod[[6]] <-  function(form, df) lmer(formula = form, data = df)
     #c) set formulas
         form1 <- y ~ ego_black2 + ego_age + ego_age2 + ego_female + ego_black2 * (ego_age + ego_age2) + fam_region + year2 + died  + (1 | fam_id_68 / ind_id)
         form2 <- update(form1, ~ . +
             ihs_income  + ego_dg_highschool + ego_dg_somecollege + ego_dg_bachelors + ego_dg_advanced)
         form2b <- update(form2, ~ . +
             ego_black2 * (ihs_income  + ego_dg_highschool + ego_dg_somecollege + ego_dg_bachelors + ego_dg_advanced) )
-        form3 <- update(form3, ~ . +
+        form3 <- update(form2b, ~ . +
             ihs_wealth)
-        form3b <- update(form3b, ~ . +
+        form3b <- update(form3, ~ . +
             ihs_wealth:ego_black2)
-        form4 <- update(form4, ~ . +
+        form4 <- update(form3b, ~ . +
             eq_home_d + ihs_home + ihs_debt + ihs_stock + ihs_savings)
-        form4b <- update(form4b, ~ . +
+        form4b <- update(form4, ~ . +
             ego_black2:(eq_home_d + ihs_home + ihs_debt + ihs_stock + ihs_savings))
         l.forms <- list(form1, form2, form2b, form3, form3b, form4, form4b)
     #d) remove unecessary variables from df
@@ -83,7 +81,7 @@ library(xlsx)
             data[, two.obs.since.2005 := ind_id %in% df[year >= 2005 & year <= 2011 & !already_died, .N , by = "ind_id"][N >= 2, ind_id]]
             data <- data[two.obs.since.2005 == T, ]
           }else{
-            data[, three.obs.since.1984 := ind_id %in% df.1984[years.after.1984 == T & !already_died, .N , by = "ind_id"][N >= 3, ind_id]]
+            data[, three.obs.since.1984 := ind_id %in% df[year %in% c(1984, 1989, 1994, 1999, 2001, 2003, 2005, 2007, 2009, 2011, 2013, 2015) & !already_died, .N , by = "ind_id"][N >= 3, ind_id]]
             data <- data[three.obs.since.1984 == T, ]
           }
       #run model
@@ -199,3 +197,4 @@ library(xlsx)
             write.xlsx(table, "C:/Users/admin/Desktop/Table 2 - Models.xlsx", sheetName = vars[i], row.names=FALSE, append=TRUE)
           }
       }
+
