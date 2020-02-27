@@ -192,9 +192,9 @@ library(xlsx)
           table[,(num.cols) := lapply(.SD, function(x) paste("'", x, sep = "")), .SDcols = num.cols]
         #h) Save results
           if(i == 1){
-            write.xlsx(table, "C:/Users/admin/Desktop/Table 2 - Models.xlsx", sheetName = vars[i], row.names=FALSE)
+            write.xlsx(table, "C:/Users/admin/Desktop/Table 2 - Models 1984.xlsx", sheetName = vars[i], row.names=FALSE)
           }else{
-            write.xlsx(table, "C:/Users/admin/Desktop/Table 2 - Models.xlsx", sheetName = vars[i], row.names=FALSE, append=TRUE)
+            write.xlsx(table, "C:/Users/admin/Desktop/Table 2 - Models 1984.xlsx", sheetName = vars[i], row.names=FALSE, append=TRUE)
           }
       }
 

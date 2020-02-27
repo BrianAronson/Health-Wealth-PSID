@@ -45,7 +45,7 @@ library(xlsx)
             "ego_dg_somecollege",
             "ego_dg_bachelors",
             "ego_dg_advanced",
-            "died",
+            "ego_died",
             "ego_black"
         )]
 
@@ -61,19 +61,26 @@ library(xlsx)
             for(i in 1:length(W)){
                 try({
                     sm$variable[i] <- names(W)[i]
-                    sm$meanW[i] <- mean(W[, i], na.rm = T)
-                    sm$meanB[i] <- mean(B[, i], na.rm = T)
-                    sm$pval[i] <- t.test(W[, i], B[, i])$p.val
+                    sm$meanW[i] <- mean(as.numeric(as.character(W[, i])), na.rm = T)
+                    sm$meanB[i] <- mean(as.numeric(as.character(B[, i])), na.rm = T)
+                    sm$pval[i] <- t.test(as.numeric(as.character(W[, i])), as.numeric(as.character(B[, i])))$p.val
                 })
             }
+        
         #Format results
             sm[grepl("ego_age", sm$variable), ][2:ncol(sm)] <- sm[grepl("ego_age", sm$variable), ][2:ncol(sm)] + 25
-            sm$pval <- format(round(sm$pval, 3), nsmall = 3)
-            sm$pval <- substr(sm$pval, 2,5)
+            sm$pval <- format(round(as.numeric(sm$pval), 3), nsmall = 3)
+            # sm$pval <- substr(sm$pval, 2,5)
             sm$pval <- ifelse(sm$pval == ".000", "<.001", paste(" ", sm$pval, sep = ""))
             sm$meanW <- format(round(sm$meanW, 2), nsmall = 2, big.mark=",")
             sm$meanB <- format(round(sm$meanB, 2), nsmall = 2, big.mark=",")
             sm[grepl("x", sm$variable), ] <- ""
         #Save
             write.xlsx(sm, "C:/Users/admin/Desktop/Table 1.xlsx")
+
+summary(df$died)
+summary(df$already_died)
+summary(df$ego_died)
+summary(df$just_died)
+summary(tdf$ego_died)
 

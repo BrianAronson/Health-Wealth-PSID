@@ -131,7 +131,7 @@ library(ggthemes)
     
 #8) reduce to just key DVs and final model
     dft <- dft[var %in% c("Own Home", "Home Equity", "Savings", "Stocks", "Debt"), ]
-    dft <- dft[model == 7, ]
+    dft <- dft[model == 6, ]
 
     
 #9) plot    
